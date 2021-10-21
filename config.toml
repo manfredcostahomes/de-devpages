@@ -4,11 +4,11 @@ title = "Manfred Costa Blanca Homes"
 relativeURLs = true
 
 [[module.imports]]
-path = "github.com/manfredcostahomes/property"
+path = "github.com/manfredcostahomes/de"
 
   [[module.imports.mounts]]
-  source = "content/property"
-  target = "content/immobilien"  
+  source = "content"
+  target = "content"  
  
 [taxonomies]
   haus = "hauser"
