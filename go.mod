@@ -1,4 +1,4 @@
-module github.com/manfredcostahomes/mods
+module github.com/manfredcostahomes/de-devpages
 
 go 1.17
 
