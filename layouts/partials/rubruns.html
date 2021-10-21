@@ -1,0 +1,65 @@
+{{ range $taxonomyname, $taxonomy := .Site.Taxonomies }}
+{{ $scratch := newScratch }}
+  <!--<li><a href="{{ "/" | relLangURL}}{{ $taxonomyname | urlize }}">{{ $taxonomyname }}</a>-->
+    <div class='rubruns columns is-multiline'>
+      {{ range $key, $value := $taxonomy }}
+        {{ if ( in $key "villamartin") }}
+        {{ $scratch.Add "location" (slice $key) }} 
+        {{ else if or ( in $key "villa") ( in $key "wohnung") ( in $key "haus") ( in $key "neubau") }}
+        {{ $scratch.Add "proptypes" (slice $key) }}                       
+        {{ else if ( in $key "von") }} 
+        {{ $scratch.Add "preis" (slice $key) }}
+        {{ else if ( in $key "region") }}
+        {{ $scratch.Add "region" (slice $key) }}
+        {{ else if ( in $key "provinz") }}
+        {{ $scratch.Add "provinz" (slice $key) }}
+        {{ else if ( in $key "costa-") }}
+        {{ $scratch.Add "costa" (slice $key) }}                          
+        {{ else }}
+        {{ $scratch.Add "location" (slice $key) }}
+        {{ end }}
+      {{ end }}
+      <span class="column is-full is-size-4">Immobilien nach Costa</span>
+      {{ range ($scratch.Get "costa") }}
+      <span class="column is-half is-size-5"> 
+        {{ $urltextinde := replace . "sud" "süd" }}
+        <a href="/hauser/{{ . }}">Häuser zum Verkauf in <locattion style="text-transform: capitalize;" >{{ humanize $urltextinde }}</locattion></a> 
+      </span>
+      {{ end }}
+      <span class="column is-full is-size-4">Immobilien nach Region</span>
+      {{ range ($scratch.Get "region") }}
+      <span class="column is-half is-size-5"> 
+          <a href="/hauser/{{ . }}">Häuser zum Verkauf in <locattion style="text-transform: capitalize;" >{{ humanize . }}</locattion></a> 
+      </span>
+      {{ end }}
+      <span class="column is-full is-size-4">Immobilien nach  Provinz</span>
+      {{ range ($scratch.Get "provinz") }}
+      <span class="column is-half is-size-5"> 
+          <a href="/hauser/{{ . }}">Häuser zum Verkauf in <locattion style="text-transform: capitalize;" >{{ humanize . }}</locattion></a> 
+      </span>
+      {{ end }}
+      <span class="column is-full is-size-4">Immobilien nach Standort</span>
+      {{ range ($scratch.Get "location") }}
+      {{ $nonasclocation := . }}
+      {{ $nonasclocation = replace $nonasclocation "dona" "doña" }}
+      {{ $nonasclocation = replace $nonasclocation "alacazares" "alcázares" }}
+      {{ $nonasclocation = replace $nonasclocation "canada" "cañada" }}
+      <span class="column is-half is-size-5"> 
+          <a href="/hauser/{{ . }}">Häuser zum Verkauf in <locattion style="text-transform: capitalize;" >{{ humanize $nonasclocation }}</locattion></a> 
+      </span>
+      {{ end }}
+      <span class="column is-full is-size-4">Immobilien nach Typ</span>
+      {{ range ($scratch.Get "proptypes") }}
+      <span class="column is-half is-size-5"> 
+          <a href="/hauser/{{ . }}"><locattion style="text-transform: capitalize;" >{{ humanize . }} </locattion>immobilie zum Verkauf</a> 
+      </span>
+      {{ end }}
+      <span class="column is-full is-size-4">Immobilien nach Preis</span>
+      {{ range ($scratch.Get "preis") }}
+      <span class="column is-half is-size-5"> 
+          <a href="/hauser/{{ . }}">Häuser <locattion style="text-transform: capitalize;" >{{ replace (replace  . "von-" "von €") "-bis-" " bis €"}}</locattion></a> 
+      </span>
+      {{ end }}
+    </div>
+  
+{{ end }}
